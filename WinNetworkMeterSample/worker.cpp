@@ -33,7 +33,7 @@ DWORD WINAPI CWorker::ExecThread()
 
 		InvalidateRect(hWnd, NULL, FALSE);
 
-		Sleep(1000);
+		Sleep(500);
 
 
 
