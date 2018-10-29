@@ -2,6 +2,12 @@
 
 #include "stdafx.h"
 
+struct Traffic {
+	ULONGLONG in;
+	ULONGLONG out;
+	DWORD tick;
+};
+
 class CWorker
 {
 public:
@@ -13,12 +19,7 @@ public:
 	void Terminate();
 
 
-	DWORD trafficIn;
-	DWORD trafficOut;
-	DWORD trafficTick = 0;
-	DWORD lastTrafficIn;
-	DWORD lastTrafficOut;
-	DWORD lastTrafficTick = 0;
+	std::vector<Traffic> traffics;
 
 
 private:

@@ -33,7 +33,7 @@ DWORD WINAPI CWorker::ExecThread()
 
 		InvalidateRect(hWnd, NULL, FALSE);
 
-		Sleep(500);
+		Sleep(100);
 
 
 
@@ -51,43 +51,42 @@ DWORD WINAPI CWorker::ExecThread()
 void CWorker::CollectTraffic()
 {
 	DWORD i;
-	PMIB_IFTABLE ifTable;
-	MIB_IFROW MibIfRow;
-	DWORD dwSize = 0;
-	DWORD dwRetVal = 0;
+	PMIB_IF_TABLE2 ifTable2;
 
-	/* GetIfTable()で必要になるサイズを取得 */
-	if (GetIfTable(NULL, &dwSize, 0) == ERROR_INSUFFICIENT_BUFFER) {
-		ifTable = (MIB_IFTABLE *)malloc(dwSize);
-	}
-	else {
-		return;
-	}
+	Traffic t;
+	t.in = 0;
+	t.out = 0;
+	t.tick = GetTickCount();
 
-	lastTrafficIn = trafficIn;
-	lastTrafficOut = trafficOut;
-	lastTrafficTick = trafficTick;
-
-	trafficIn = 0;
-	trafficOut = 0;
-	trafficTick = GetTickCount();
-
-	if ((dwRetVal = GetIfTable(ifTable, &dwSize, 0)) == NO_ERROR) {
-		if (ifTable->dwNumEntries > 0) {
+	if (GetIfTable2(&ifTable2) == NO_ERROR) {
+		if (ifTable2->NumEntries > 0) {
+			printf("----\n");
 //			printf("Number of Adapters: %ld\n\n", ifTable->dwNumEntries);
-			for (i = 1; i <= ifTable->dwNumEntries; i++) {
-				MibIfRow.dwIndex = i;
-				if ((dwRetVal = GetIfEntry(&MibIfRow)) == NO_ERROR) {
-//					printf("Description: %s\n", MibIfRow.bDescr);
+			for (i = 0; i < ifTable2->NumEntries; i++) {
 
-					trafficIn += MibIfRow.dwInOctets;
-					trafficOut += MibIfRow.dwOutOctets;
+				MIB_IF_ROW2* ifrow2 = &ifTable2->Table[i];
+				if (!ifrow2->InterfaceAndOperStatusFlags.FilterInterface &&
+					(ifrow2->Type == IF_TYPE_ETHERNET_CSMACD ||
+					 ifrow2->Type == IF_TYPE_IEEE80211 ||
+					 ifrow2->Type == IF_TYPE_PPP)
+					)
+				{
+					GetIfEntry2(ifrow2);
+					t.in += ifrow2->InOctets;
+					t.out += ifrow2->OutOctets;
 				}
 			}
+
+			traffics.push_back(t);
+			printf("=> in[%lld], out[%lld]\n", t.in, t.out);
 		}
 	}
 	else {
 		printf("no adapters");
+	}
+
+	if (traffics.size() > 20) {
+		traffics.erase(traffics.begin());
 	}
 
 
