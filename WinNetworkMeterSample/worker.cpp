@@ -50,7 +50,6 @@ DWORD WINAPI CWorker::ExecThread()
 
 void CWorker::CollectTraffic()
 {
-	DWORD i;
 	PMIB_IF_TABLE2 ifTable2;
 
 	Traffic t;
@@ -60,11 +59,14 @@ void CWorker::CollectTraffic()
 
 	if (GetIfTable2(&ifTable2) == NO_ERROR) {
 		if (ifTable2->NumEntries > 0) {
-			printf("----\n");
-//			printf("Number of Adapters: %ld\n\n", ifTable->dwNumEntries);
-			for (i = 0; i < ifTable2->NumEntries; i++) {
+//			printf("----\n");
+//			printf("Number of Adapters: %ld\n\n", ifTable2->NumEntries);
+			for (int i = ifTable2->NumEntries - 1; i >= 0; i--) {
 
 				MIB_IF_ROW2* ifrow2 = &ifTable2->Table[i];
+//				wprintf(L"[%d] %s\n", i, ifrow2->Description);
+
+
 				if (!ifrow2->InterfaceAndOperStatusFlags.FilterInterface &&
 					(ifrow2->Type == IF_TYPE_ETHERNET_CSMACD ||
 					 ifrow2->Type == IF_TYPE_IEEE80211 ||
@@ -78,7 +80,7 @@ void CWorker::CollectTraffic()
 			}
 
 			traffics.push_back(t);
-			printf("=> in[%lld], out[%lld]\n", t.in, t.out);
+//			printf("=> in[%lld], out[%lld]\n", t.in, t.out);
 		}
 	}
 	else {
