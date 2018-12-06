@@ -13,11 +13,15 @@ artifacts:
   - path: 'Release\WinNetworkMeterSample.exe'
   - path: 'CHANGELOG.md'
 
+cache:
+  - C:/Ruby25/lib/ruby/gems/
+
 after_build:
   - set PATH=C:\Ruby25\bin;%PATH%
   - ruby --version
   - where ruby
   - gem install github_changelog_generator
+  - dir C:/Ruby25/lib/ruby/gems/
   - mkdir c:\tmp
 #  - github_changelog_generator -u takke -p WinNetworkMeterSample
   - github_changelog_generator -u sakura-editor -p sakura --exclude-labels duplicate,question,invalid,wontfix,CI,management,refactoring
