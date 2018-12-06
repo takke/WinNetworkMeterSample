@@ -11,7 +11,7 @@ platform:
 
 artifacts:
   - path: 'Release\WinNetworkMeterSample.exe'
-#  - path: 'CHANGELOG.md'
+  - path: 'CHANGELOG.md'
 
 after_build:
   - set PATH=C:\Ruby25\bin;%PATH%
