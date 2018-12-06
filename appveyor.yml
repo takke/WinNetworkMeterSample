@@ -20,4 +20,4 @@ after_build:
   - gem install github_changelog_generator
   - mkdir c:\tmp
 #  - github_changelog_generator -u takke -p WinNetworkMeterSample
-  - github_changelog_generator -u sakura-editor -p sakura --exclude-labels duplicate,question,invalid,wontfix,CI
+  - github_changelog_generator -u sakura-editor -p sakura --exclude-labels duplicate,question,invalid,wontfix,CI,management,refactoring
