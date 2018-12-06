@@ -14,14 +14,14 @@ artifacts:
   - path: 'CHANGELOG.md'
 
 cache:
-  - C:/Ruby25/lib/ruby/gems/
+  - C:/Ruby25/lib/ruby/gems/2.5.0/
 
 after_build:
   - set PATH=C:\Ruby25\bin;%PATH%
   - ruby --version
   - where ruby
   - gem install github_changelog_generator
-  - dir C:\Ruby25\lib\ruby\gems\
+  - dir C:\Ruby25\lib\ruby\gems\2.5.0\
   - mkdir c:\tmp
 #  - github_changelog_generator -u takke -p WinNetworkMeterSample
   - github_changelog_generator -u sakura-editor -p sakura --exclude-labels duplicate,question,invalid,wontfix,CI,management,refactoring
