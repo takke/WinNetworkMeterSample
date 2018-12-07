@@ -18,7 +18,6 @@ public:
 	static DWORD WINAPI ThreadFunc(LPVOID lpParameter);
 	void Terminate();
 
-
 	std::vector<Traffic> traffics;
 
 
@@ -26,8 +25,8 @@ private:
 	HWND hWnd;
 
 
-	bool myExitFlag; // ←終了指示を保持するフラグ 
-	HANDLE myMutex;  // ←排他用 Mutex 
+	bool myExitFlag; // 終了指示を保持するフラグ 
+	HANDLE myMutex;  // 排他制御
 
 	DWORD WINAPI ExecThread();
 	void CollectTraffic();
