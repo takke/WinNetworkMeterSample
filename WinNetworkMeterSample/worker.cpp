@@ -23,6 +23,8 @@ DWORD WINAPI CWorker::ThreadFunc(LPVOID lpParameter)
 	return ((CWorker*)lpParameter)->ExecThread();
 }
 
+#define TARGET_FPS 50
+
 DWORD WINAPI CWorker::ExecThread()
 {
 
@@ -31,7 +33,7 @@ DWORD WINAPI CWorker::ExecThread()
 
 		InvalidateRect(hWnd, NULL, FALSE);
 
-		Sleep(20);
+		Sleep(1000 / TARGET_FPS);
 
 
 
@@ -85,7 +87,7 @@ void CWorker::CollectTraffic()
 		printf("no adapters");
 	}
 
-	if (traffics.size() > 50) {
+	if (traffics.size() > TARGET_FPS) {
 		traffics.erase(traffics.begin());
 	}
 
