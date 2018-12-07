@@ -27,13 +27,11 @@ DWORD WINAPI CWorker::ExecThread()
 {
 
 	while (true) {
-		// •K—v‚Èˆ—
-
 		CollectTraffic();
 
 		InvalidateRect(hWnd, NULL, FALSE);
 
-		Sleep(100);
+		Sleep(20);
 
 
 
@@ -87,7 +85,7 @@ void CWorker::CollectTraffic()
 		printf("no adapters");
 	}
 
-	if (traffics.size() > 20) {
+	if (traffics.size() > 50) {
 		traffics.erase(traffics.begin());
 	}
 
